@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Salt n Pepper</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome (use same or newer) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+
+  <style>
+    /* Base */
+    body {
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Navbar adjustments */
+    .site-navbar {
+      background: #000;
+      border-bottom: 0;
+    }
+    .site-navbar .logo {
+      width: 150px;
+      height: auto;
+    }
+    .nav-link {
+      color: #fff !important;
+    }
+    .nav-link:hover { color: #ffd700 !important; }
+
+    .btn-order {
+      background-color: #ed1c24;
+      color: #fff;
+      border-radius: 25px;
+      padding: 10px 18px;
+      border: 2px solid #ed1c24;
+      font-weight: 700;
+    }
+    .btn-order:hover {
+      background: radial-gradient(circle, rgb(110,143,138) 0%, rgb(129,75,129) 100%);
+      border-color: #fff;
+      color: #fff;
+    }
+
+    /* Cart popover (kept similar) */
+    .cart-wrapper { position: relative; display: inline-block; }
+    .cart-container {
+      display: none;
+      position: absolute;
+      top: 46px;
+      right: -8px;
+      width: 320px;
+      max-width: 90vw;
+      background: #fff;
+      color: #000;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.4);
+      z-index: 1200;
+    }
+    #cart-toggle { display: none; }
+    #cart-toggle:checked + .cart-label + .cart-container { display: block; }
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: #ff0238;
+      color: #fff;
+      width: 20px; height: 20px;
+      display:flex;align-items:center;justify-content:center;border-radius:50%;
+      font-size:12px;
+    }
+
+    /* Hero */
+    .hero-img { width: 100%; height: 55vh; object-fit: cover; display:block; }
+    @media (min-width:1200px) { .hero-img { height: 555px; } }
+
+    /* Category images row */
+    .cat-img { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; }
+
+    /* Overlay 'box' on hero (original .box) */
+    .hero-overlay {
+      position: absolute;
+      top: 12%;
+      right: 5%;
+      width: 380px;
+      background: rgb(17,17,17);
+      padding: 22px;
+      border-radius: 6px;
+    }
+    .hero-overlay h3.small-title { color: #ED1C24; letter-spacing: 0.48em; font-weight: 700; font-size: 14px; }
+    .hero-overlay h1.big { font-family: "butler", serif; font-size: 42px; font-weight: 900; margin-top:8px; }
+    .hero-overlay p.lead { color: #fff; margin-top: 12px; font-size: 16px; }
+    .hero-overlay .learn-btn { margin-top: 14px; border-radius: 30px; border:1px solid #fff; background: transparent; color:#fff; padding: 8px 18px; font-weight:700; }
+
+    /* smaller devices - overlay becomes static under image */
+    @media (max-width: 991.98px) {
+      .hero-img { height: auto; max-height: 420px; }
+      .hero-overlay { position: static; width: 100%; margin-top: -60px; transform: translateY(-10%); }
+    }
+
+    /* "Our Deals" & price labels */
+    .deal-card img { height: 250px; object-fit: cover; border-radius: 6px; }
+    .price-label { font-weight: 700; color: #fff; margin-top: 10px; display:inline-block; }
+    .plus-btn { background: #ED1C24; color:#fff; width:38px; height:38px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border: none; }
+
+    /* Menu of the week card */
+    .menu-week {
+      background: rgb(17,17,17);
+      padding: 30px;
+      border-radius: 8px;
+    }
+    .menu-week h3 { color: #ED1C24; letter-spacing: 0.48em; }
+    .menu-week h1 { font-family: "butler"; font-size: 42px; font-weight: 900; }
+    .order-btn { background:#ed1c24; color:#fff; padding:10px 20px; border-radius: 25px; border:2px solid #ed1c24; font-weight:700; }
+
+    /* small adjustments for images used consecutively in page */
+    .mb-img { border-radius:10px; width:100%; height:auto; object-fit:cover; }
+
+    /* Footer */
+    footer { background: #000; color: #c9c7c7; padding-top: 40px; }
+    footer a { color: #c9c7c7; text-decoration:none; }
+    footer a:hover { color: #fff; }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg site-navbar sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="salt.webp" alt="Salt n Pepper" class="logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="resturent.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="about us.html">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="Publications.html">Publications</a></li>
+            <li class="nav-item"><a class="nav-link" href="Branches.html">Branches</a></li>
+
+            <!-- cart -->
+            <li class="nav-item ms-3">
+              <div class="cart-wrapper">
+                <input id="cart-toggle" type="checkbox" />
+                <label for="cart-toggle" class="cart-label position-relative">
+                  <i class="fa-solid fa-cart-shopping fa-xl text-light"></i>
+                  <span class="cart-badge">0</span>
+                </label>
+
+                <div class="cart-container">
+                  <div class="p-3 d-flex justify-content-between align-items-center">
+                    <label for="cart-toggle" class="mb-0" style="cursor:pointer;"><i class="fa-solid fa-xmark"></i></label>
+                    <h5 class="mb-0">Your Cart</h5>
+                  </div>
+                  <hr class="m-0">
+                  <div class="p-4 text-center">
+                    <p class="mb-3">Your cart is empty</p>
+                    <p class="small">Min order amount must be greater than PKR 1000</p>
+                    <button class="btn btn-dark w-75 mt-2" disabled>Checkout</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item ms-3">
+              <a href="online  order.html" class="btn btn-order">Order Online</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="position-relative">
+    <img src="9386028a-054c-47eb-a9a0-937d033c290f.webp" alt="Hero" class="hero-img w-100 d-block">
+    <div class="container">
+      <!-- overlay box (positioned absolute on large screens) -->
+      <div class="hero-overlay d-none d-lg-block">
+        <h3 class="small-title">SALT'N PEPPER RESTURANT</h3>
+        <h1 class="big">Discover The Taste!</h1>
+        <p class="lead">The Salt’n Pepper is Pakistan’s most recognized and distinguished hospitality brand with a history of market innovation and excellence in restaurants chain operation.</p>
+        <button class="learn-btn">Learn more</button>
+      </div>
+    </div>
+
+    <!-- on small screens show overlay under image -->
+    <div class="container d-lg-none mt-3">
+      <div class="hero-overlay">
+        <h3 class="small-title">SALT'N PEPPER RESTURANT</h3>
+        <h1 class="big">Discover The Taste!</h1>
+        <p class="lead">The Salt’n Pepper is Pakistan’s most recognized and distinguished hospitality brand with a history of market innovation and excellence in restaurants chain operation.</p>
+        <button class="learn-btn">Learn more</button>
+      </div>
+    </div>
+  </section>
+  <!-- CATEGORY IMAGES + LINKS -->
+  <section class="container my-5">
+    <h2 class="h3 text-center mb-4">Choose by Category</h2>
+
+    <!-- Images row -->
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-2">
+        <img src="soup.webp" alt="Soups" class="cat-img mb-2">
+        <p class="text-center fw-bold mb-0">Soups</p>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <img src="sandwiches.webp" alt="Sandwiches" class="cat-img mb-2">
+        <p class="text-center fw-bold mb-0">Sandwiches</p>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <img src="famous burger.webp" alt="Famous Burger" class="cat-img mb-2">
+        <p class="text-center fw-bold mb-0">Our Famous Burger</p>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <img src="giant burger.webp" alt="Giant Burger" class="cat-img mb-2">
+        <p class="text-center fw-bold mb-0">Giant Burger</p>
+      </div>
+
+      <div class="col-12 col-md-4 col-lg-4">
+        <img src="chicken.webp" alt="Chicken Continental" class="cat-img mb-2">
+        <p class="text-center fw-bold mb-0">Chicken Continental</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG PROMO / PLATTER + overlay box for large screens (duplicated but responsive) -->
+  <section class="container mb-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-1">
+        <img src="platter.webp" alt="Platter" class="img-fluid rounded mb-3">
+      </div>
+
+      <div class="col-lg-6 order-lg-2">
+        <div class="p-4" style="background:transparent;">
+          <!-- replicate the 'box' look -->
+          <div style="background: rgb(17,17,17); padding: 28px; border-radius:8px;">
+            <h5 class="text-uppercase" style="color:#ED1C24; letter-spacing:0.48em;">SALT'N PEPPER RESTURANT</h5>
+            <h2 style="font-family: 'butler', serif; font-size: 42px; font-weight:900; color:#fff;">Discover The Taste!</h2>
+            <p style="color:#fff; margin-top:10px;">
+              The Salt’n Pepper is Pakistan’s most recognized and distinguished hospitality brand with a history of market innovation and excellence in restaurants chain operation. The Salt’n Pepper Restaurants are regarded and respected as the number one restaurant entity in Pakistan by local and foreign observers.
+            </p>
+            <button class="btn btn-outline-light mt-3">Learn more</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- OUR DEALS -->
+  <section class="container my-5">
+    <h2 class="h3 text-center mb-4">Our Deals</h2>
+
+    <div class="row g-4">
+      <!-- Superior -->
+      <div class="col-md-4">
+        <div class="deal-card p-2">
+          <img src="superior.webp" alt="Superior" class="mb-img">
+          <h5 class="mt-2">Superior</h5>
+          <p class="text-secondary small">Chicken Fillet (3 Pcs), Chicken Sandwich Cold (2 Pcs), Fried Chicken Sandwich, Chicken Nuggets (4 Pcs), Chicken Shashlik (1/2 Portion)</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="price-label">Rs 1,650.00</span>
+            <button class="plus-btn"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deluxe -->
+      <div class="col-md-4">
+        <div class="deal-card p-2">
+          <img src="deluxe.webp" alt="Deluxe" class="mb-img">
+          <h5 class="mt-2">Deluxe</h5>
+          <p class="text-secondary small">Chicken Fillet, Sandwich, Chicken Nuggets, Fried Chicken etc.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="price-label">Rs 2,050.00</span>
+            <button class="plus-btn"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIP -->
+      <div class="col-md-4">
+        <div class="deal-card p-2">
+          <img src="vip.webp" alt="VIP" class="mb-img">
+          <h5 class="mt-2">VIP</h5>
+          <p class="text-secondary small">A premium selection including Chicken Shashlik, Sandwiches and more.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="price-label">Rs 2,190.00</span>
+            <button class="plus-btn"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- next row (Pakistani B.B.Q / Deluxe / VIP) -->
+    <div class="row g-4 mt-3">
+      <div class="col-md-4">
+        <img src="Pakistani B.B.Q.webp" alt="BBQ" class="mb-img">
+        <h5 class="mt-2">Pakistani B.B.Q</h5>
+        <p class="text-secondary small">Chicken Tikka (1 Piece), Chicken Seekh Kabab (3 Pcs), ...</p>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <span class="price-label">Rs 2,290.00</span>
+          <button class="plus-btn"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <img src="Pakistani Deluxe.webp" alt="Pakistani Deluxe" class="mb-img">
+        <h5 class="mt-2">Pakistani Deluxe</h5>
+        <p class="text-secondary small">Boneless Chicken Handi (Portion), Chicken Seekh Kabab</p>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <span class="price-label">Rs 2,150.00</span>
+          <button class="plus-btn"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <img src="Pakistani VIP.webp" alt="Pakistani VIP" class="mb-img">
+        <h5 class="mt-2">Pakistani VIP</h5>
+        <p class="text-secondary small">Boneless Chicken Boti, Boneless Chicken Handi etc.</p>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <span class="price-label">Rs 2,450.00</span>
+          <button class="plus-btn"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- MENU OF THE WEEK -->
+  <section class="container my-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-7">
+        <div class="menu-week">
+          <h3>MENU OF THE WEEK</h3>
+          <h1>Something Special<br> For You To Try This<br> Month!</h1>
+          <p class="text-white">Chicken Chilli Dry (1/2 Portion), Chicken Drumstick (2 Pcs), Egg Fried Rice, Chicken Chow-mein, Dessert</p>
+          <h4 class="mt-3">Chinese<br><small class="text-muted">Rs.2170 Plus Tax</small></h4>
+          <button class="order-btn mt-3">Order Online</button>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <img src="Chinese.webp" alt="Chinese Menu" class="img-fluid rounded">
+      </div>
+    </div>
+
+    <!-- secondary box with logo and description (box2) -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="p-3" style="background: rgb(17,17,17); border-radius: 8px;">
+          <div class="row align-items-center">
+            <div class="col-md-2">
+              <img src="salt.webp" alt="logo" class="img-fluid" style="max-width:130px;">
+            </div>
+            <div class="col-md-8">
+              <p class="mb-0 text-secondary">The Salt’n Pepper Restaurants are an example of gracious dinning, outstanding service, extraordinary classic and contemporary cuisine. The restaurants have become the ultimate dinning destinations in Lahore. From family occasions to business dinner and moments of the heart, this place is where unforgettable memories are made.</p>
+            </div>
+            <div class="col-md-2 text-md-start text-sm-start mt-3 mt-md-0">
+              <p class="mb-1"><a href="#" class="text-light">Term & Conditions</a></p>
+              <p class="mb-0"><a href="#" class="text-light">Privacy Policy</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="mt-5">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <img src="salt.webp" alt="logo" style="max-width:120px;">
+          <p class="text-secondary mt-3">The Salt’n Pepper Restaurants are an example of gracious dinning, outstanding service, extraordinary classic and contemporary cuisine. The restaurants have become the ultimate dinning destinations in Lahore. From family occasions to business dinner and moments of the heart, this place is where unforgettable memories are made.</p>
+        </div>
+
+        <div class="col-md-4">
+          <h5>Site Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="resturent.html">Home</a></li>
+            <li><a href="about us.html">About us</a></li>
+            <li><a href="#">Deals</a></li>
+            <li><a href="#">Photos</a></li>
+            <li><a href="Publications.html">Publications</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <p class="text-secondary mb-1">Foodconsults (Pvt) Ltd</p>
+          <p class="text-secondary mb-1">23-Usman Block, New GardenTown, Lahore, Pakistan</p>
+          <p class="text-secondary mb-1">+92 42 358 509 31</p>
+          <p class="text-secondary mb-1">+92 42 358 509 30</p>
+          <p class="text-secondary mb-1">snpfood@brain.net.pk</p>
+          <p class="text-secondary mb-1">Free Delivery: +92 42 111 100 678</p>
+
+          <div class="mt-3 d-flex gap-2">
+            <a href="#" class="text-light"><i class="fab fa-instagram p-2" style="background:#ED1C24;border-radius:50%;"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-facebook-f p-2" style="background:#ED1C24;border-radius:50%;"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-twitter p-2" style="background:#ED1C24;border-radius:50%;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12 text-center text-secondary small">
+          &copy; Salt n Pepper — All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
